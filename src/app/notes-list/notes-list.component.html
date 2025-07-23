@@ -1,0 +1,10 @@
+
+    <ul *ngFor= "let note of notesList;trackBy:trackByNoteId">
+        <button (click)="showContent(note.title,note.text)">
+        <li>
+                <span>{{note.title}}</span>
+                <span>{{note.text}}</span>
+        </li>
+        </button>
+    </ul>
+
