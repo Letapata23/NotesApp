@@ -40,7 +40,7 @@ export class AddNoteComponent {
       }
 
       console.log("the newly created note: " + note.id + " " + note.title )
-        // Add the note to the list of notes
+        // Add the note to th/e list of notes
         notes.unshift(note) // Adds the note at the beginning of the notes list
         this.formGroup.reset()
         this.router.navigateByUrl("")

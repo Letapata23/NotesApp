@@ -3,11 +3,13 @@ import { notes } from '../notes';
 import { Note } from '../notes';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-notes-list',
   standalone:true,
-  imports: [NgFor],
+  imports: [NgFor,RouterLink,RouterModule],
   templateUrl: './notes-list.component.html',
   styleUrl: './notes-list.component.css'
 })

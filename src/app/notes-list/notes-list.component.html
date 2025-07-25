@@ -1,7 +1,7 @@
 
-    <button (click) = "showAddForm()">Add Note</button>
+    <button routerLink = "add-notes-component">Add Note</button>
     <ul *ngFor= "let note of notesList;trackBy:trackByNoteId">
-        <button (click)="showContent(note.title,note.text)">
+        <button [routerLink]="['/note',note.id]">
         <li>
                 <span>{{note.title}}</span>
                 <span>{{note.text}}</span>

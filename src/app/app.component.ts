@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,RouterModule,HeaderComponent,NotesListComponent,AddNoteComponent],
+  imports: [RouterOutlet,RouterModule,HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
