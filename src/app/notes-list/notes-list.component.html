@@ -1,4 +1,5 @@
 
+    <button (click) = "showAddForm()">Add Note</button>
     <ul *ngFor= "let note of notesList;trackBy:trackByNoteId">
         <button (click)="showContent(note.title,note.text)">
         <li>

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { notes } from '../notes';
 import { Note } from '../notes';
 import { NgFor } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notes-list',
@@ -13,6 +14,7 @@ import { NgFor } from '@angular/common';
 
 export class NotesListComponent {
   notesList:Note[] = notes;
+  router:Router = inject(Router)
 
   trackByNoteId(index:number,note:any):any{
     return note.id;
@@ -20,5 +22,9 @@ export class NotesListComponent {
 
   showContent(title:string,text:string){
     alert(`Title: ${title} '\n' Text: ${text}`)
+  }
+
+  showAddForm(){
+    this.router.navigateByUrl("/add-notes-component")
   }
 }
