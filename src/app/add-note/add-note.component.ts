@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { Note } from '../notes';
-import { notes } from '../notes';
+//import { notes } from '../notes';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-add-note',
@@ -13,10 +15,13 @@ import { inject } from '@angular/core';
   templateUrl: './add-note.component.html',
   styleUrl: './add-note.component.css'
 })
-export class AddNoteComponent {
 
-  notes:Note[] = notes;
+export class AddNoteComponent{
+
+  notes:Note[] = [];
   router:Router = inject(Router)
+
+  constructor(private noteService:NotesService){}
 
   formGroup = new FormGroup({
     title:new FormControl('',Validators.required),
@@ -24,24 +29,20 @@ export class AddNoteComponent {
   })
 
   addNote(){
-    var noteIds = notes.map(note => note.id)
-    console.log("executing addNote, noteIds:" + noteIds)
 
     if(this.formGroup.valid){
-      let maxId = 0;
-      if(noteIds.length > 0){
-        maxId = Math.max(...noteIds)
-        console.log("maximum id is" + " " + maxId)
-      }
+      
       var note:Note = {
-        id:maxId + 1,
+        id:undefined,
         title: <string> this.formGroup.value.title ?? '',
         text:<string>this.formGroup.value.text ?? '',
       }
 
-      console.log("the newly created note: " + note.id + " " + note.title )
+      console.log("the newly created note: " + note.id + "" + note.text + " " + note.title )
         // Add the note to th/e list of notes
-        notes.unshift(note) // Adds the note at the beginning of the notes list
+        this.noteService.createNote(note).subscribe(note => {
+          console.log("The note is: " + note.id + "" + note.text + " " + note.title)
+        }) // Adds the note at the beginning of the notes list
         this.formGroup.reset()
         this.router.navigateByUrl("")
     }

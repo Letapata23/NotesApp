@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { notes } from '../notes';
 import { Note } from '../notes';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-show-note',
@@ -18,29 +18,33 @@ import { Note } from '../notes';
   `,
   styleUrl: './show-note.component.css'
 })
-export class ShowNoteComponent {
+export class ShowNoteComponent implements OnInit{
   activeRoute:ActivatedRoute 
   notes:Note[] 
   id:number 
   note:Note 
   router:Router
 
-  constructor(){
+  constructor(private notesService:NotesService){
     this.activeRoute = inject(ActivatedRoute)
-    this.notes = notes
+    this.note={id:undefined,title:"",text:""}
+    this.notes = []
     this.id = Number(this.activeRoute.snapshot.paramMap.get('id'))
-    this.note = notes.find((note) => note.id === this.id)!
     this.router = inject(Router)
   }
 
-  deleteNote(){
-    var id = this.notes.indexOf(this.note,0)
-    
-    if(id != -1){
-      notes.splice(id,1)
-      this.router.navigateByUrl('')
-    }
+  ngOnInit(){
+    this.notesService.getNotes().subscribe(notes => {
+      this.notes = notes
+      this.note = <Note>notes.find((note) => note.id === this.id)
+    })
+  }
 
+  deleteNote(){
+    this.notesService.deleteNote(this.id).subscribe(note => {
+      console.log("Deleted note:" + note)
+    })
+    this.router.navigateByUrl('')
   }
   
 }

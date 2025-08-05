@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { notes } from '../notes';
 import { Note } from '../notes';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { OnInit } from '@angular/core';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-notes-list',
@@ -14,9 +15,18 @@ import { RouterModule } from '@angular/router';
   styleUrl: './notes-list.component.css'
 })
 
-export class NotesListComponent {
-  notesList:Note[] = notes;
+export class NotesListComponent implements OnInit{
+  notesList:Note[] = [];
   router:Router = inject(Router)
+
+  constructor(private notesService:NotesService){
+  }
+
+  ngOnInit(){
+    this.notesService.getNotes().subscribe(notes => {
+      this.notesList = notes
+    })
+  }
 
   trackByNoteId(index:number,note:any):any{
     return note.id;
