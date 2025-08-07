@@ -12,7 +12,7 @@ import { NotesService } from '../notes.service';
   standalone:true,
   imports: [NgFor,RouterLink,RouterModule],
   templateUrl: './notes-list.component.html',
-  styleUrl: './notes-list.component.css'
+  styleUrl: '../../styles.css'
 })
 
 export class NotesListComponent implements OnInit{
@@ -25,6 +25,7 @@ export class NotesListComponent implements OnInit{
   ngOnInit(){
     this.notesService.getNotes().subscribe(notes => {
       this.notesList = notes
+      console.log(this.notesList)
     })
   }
 

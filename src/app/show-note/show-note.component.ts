@@ -8,16 +8,15 @@ import { NotesService } from '../notes.service';
   selector: 'app-show-note',
   imports: [RouterModule],
   template: `
-    <div>
-        <ul>
-            <li>{{note.title}}</li>
-            <li>{{note.text}}</li>
-        </ul>
-    </div>
-    <button (click) = "deleteNote()">Delete</button>
+        <div id="note-detail-section">
+            <h1 id="note-title">{{note.title}}</h1>
+            <p id="note-text">{{note.text}}</p>
+        </div>
+    <button class="button" (click) = "deleteNote()">Delete</button>
   `,
-  styleUrl: './show-note.component.css'
+  styleUrl: '../../styles.css'
 })
+
 export class ShowNoteComponent implements OnInit{
   activeRoute:ActivatedRoute 
   notes:Note[] 
