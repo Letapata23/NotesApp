@@ -3,16 +3,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { Note } from '../notes';
 import { NotesService } from '../notes.service';
+import { RouterLink } from '@angular/router';
+import { NoteIdService } from '../note-id.service';
 
 @Component({
   selector: 'app-show-note',
-  imports: [RouterModule],
+  imports: [RouterModule,RouterLink],
   template: `
         <div id="note-detail-section">
             <h1 id="note-title">{{note.title}}</h1>
             <p id="note-text">{{note.text}}</p>
         </div>
     <button class="button" (click) = "deleteNote()">Delete</button>
+    <button class="button" routerLink="/note-update">Update</button>
   `,
   styleUrl: '../../styles.css'
 })
@@ -24,7 +27,7 @@ export class ShowNoteComponent implements OnInit{
   note:Note 
   router:Router
 
-  constructor(private notesService:NotesService){
+  constructor(private notesService:NotesService,private noteIdService:NoteIdService){
     this.activeRoute = inject(ActivatedRoute)
     this.note={id:undefined,title:"",text:""}
     this.notes = []
@@ -33,6 +36,7 @@ export class ShowNoteComponent implements OnInit{
   }
 
   ngOnInit(){
+    this.noteIdService.setIdSubject(this.id)
     this.notesService.getNotes().subscribe(notes => {
       this.notes = notes
       this.note = <Note>notes.find((note) => note.id === this.id)
