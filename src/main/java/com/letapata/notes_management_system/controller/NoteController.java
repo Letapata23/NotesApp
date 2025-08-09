@@ -1,8 +1,10 @@
 package com.letapata.notes_management_system.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,30 +26,58 @@ public class NoteController {
     NotesService notesService;
     
     @GetMapping("")
-    public List<Note> getNote(){
-        return notesService.findAllNotes();
+    public ResponseEntity<List<Note>> getNote(){
+        List<Note> notes = notesService.findAllNotes();
+
+        if(notes != null){
+            return ResponseEntity.ok(notes);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @GetMapping("/{id}")
-    public Note getNoteById(@PathVariable Long id){
+    public ResponseEntity<Note> getNoteById(@PathVariable Long id){
         Note note = notesService.findNote(id);
-        return note;
+
+        if(note != null){
+            return ResponseEntity.ok(note);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @PostMapping("")
-    public Note createNote(@RequestBody Note note){
-        return notesService.createNote(note);
+    public ResponseEntity<Note> createNote(@RequestBody Note note){
+        // Save the newly created note
+        Note createdNote = notesService.createNote(note);
+
+        // Build a URI for the created resource
+        URI location = URI.create("/notes/" + createdNote.getId());
+
+        // Return 201 created with saved note in the body
+        return ResponseEntity.created(location).body(createdNote);
     }
     
     @PutMapping("/{id}")
-    public Note updateNote(@RequestBody Note note, @PathVariable Long id){
-        Note theNote = notesService.updateNote(note, id);
-        return theNote;
+    public ResponseEntity<Note> updateNote(@RequestBody Note note, @PathVariable Long id){
+        Note updatedNote = notesService.updateNote(note, id);
+
+        if(updatedNote != null){
+            return ResponseEntity.ok(updatedNote);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public Note deleteNote(@PathVariable Long id){
+    public ResponseEntity<Void> deleteNote(@PathVariable Long id){
         Note note = notesService.deleteNote(id);
-        return note;
+
+        if(note != null){
+            return ResponseEntity.noContent().build();
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 }
