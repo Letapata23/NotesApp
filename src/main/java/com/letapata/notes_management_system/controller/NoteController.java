@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.letapata.notes_management_system.dto.NoteCreationDTO;
+import com.letapata.notes_management_system.dto.NoteDTO;
+import com.letapata.notes_management_system.dto.NoteUpdateDTO;
 import com.letapata.notes_management_system.model.Note;
 import com.letapata.notes_management_system.service.NotesService;
 
@@ -26,8 +29,8 @@ public class NoteController {
     NotesService notesService;
     
     @GetMapping("")
-    public ResponseEntity<List<Note>> getNote(){
-        List<Note> notes = notesService.findAllNotes();
+    public ResponseEntity<List<NoteDTO>> getNote(){
+        List<NoteDTO> notes = notesService.findAllNotes();
 
         if(notes != null){
             return ResponseEntity.ok(notes);
@@ -37,8 +40,8 @@ public class NoteController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getNoteById(@PathVariable Long id){
-        Note note = notesService.findNote(id);
+    public ResponseEntity<NoteDTO> getNoteById(@PathVariable Long id){
+        NoteDTO note = notesService.findNote(id);
 
         if(note != null){
             return ResponseEntity.ok(note);
@@ -48,9 +51,9 @@ public class NoteController {
     }
     
     @PostMapping("")
-    public ResponseEntity<Note> createNote(@RequestBody Note note){
+    public ResponseEntity<NoteDTO> createNote(@RequestBody NoteCreationDTO note){
         // Save the newly created note
-        Note createdNote = notesService.createNote(note);
+        NoteDTO createdNote = notesService.createNote(note);
 
         // Build a URI for the created resource
         URI location = URI.create("/notes/" + createdNote.getId());
@@ -60,8 +63,8 @@ public class NoteController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@RequestBody Note note, @PathVariable Long id){
-        Note updatedNote = notesService.updateNote(note, id);
+    public ResponseEntity<NoteUpdateDTO> updateNote(@RequestBody NoteUpdateDTO note, @PathVariable Long id){
+        NoteUpdateDTO updatedNote = notesService.updateNote(note, id);
 
         if(updatedNote != null){
             return ResponseEntity.ok(updatedNote);
@@ -72,7 +75,7 @@ public class NoteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNote(@PathVariable Long id){
-        Note note = notesService.deleteNote(id);
+        NoteDTO note = notesService.deleteNote(id);
 
         if(note != null){
             return ResponseEntity.noContent().build();
