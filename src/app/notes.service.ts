@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Note } from './notes';
+import { NoteDTO } from './DTO/note-dto';
+import { NoteCreationDTO } from './DTO/note-creation-dto'; 
+import { NoteUpdateDTO } from './DTO/note-update-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +14,23 @@ export class NotesService {
   private url = "http://localhost:8080/notes"
   constructor(private httpClient:HttpClient) { }
 
-  getNotes():Observable<Note[]>{
-    return this.httpClient.get<Note[]>(this.url)
+  getNotes():Observable<NoteDTO[]>{
+    return this.httpClient.get<NoteDTO[]>(this.url)
   }
 
-  getNote(id:number):Observable<Note>{
-    return this.httpClient.get<Note>(`${this.url}/${id}`)
+  getNote(id:number):Observable<NoteDTO>{
+    return this.httpClient.get<NoteDTO>(`${this.url}/${id}`)
   }
 
-  createNote(note:Note):Observable<Note>{
-    return this.httpClient.post<Note>(this.url,note)
+  createNote(note:NoteCreationDTO):Observable<NoteCreationDTO>{
+    return this.httpClient.post<NoteCreationDTO>(this.url,note)
   }
 
-  updateNote(note:Note,id:number):Observable<Note>{
-    return this.httpClient.put<Note>(`${this.url}/${id}`, note)
+  updateNote(note:NoteUpdateDTO,id:number):Observable<NoteUpdateDTO>{
+    return this.httpClient.put<NoteUpdateDTO>(`${this.url}/${id}`, note)
   }
 
-  deleteNote(id:number):Observable<Note>{
-    return this.httpClient.delete<Note>(`${this.url}/${id}`)
+  deleteNote(id:number):Observable<NoteDTO>{
+    return this.httpClient.delete<NoteDTO>(`${this.url}/${id}`)
   }
 }

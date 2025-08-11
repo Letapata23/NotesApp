@@ -4,9 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-header',
   imports: [],
   template: `
-    <h1 id="header">{{title}}</h1>
+  <h1 id="header" style="text-align: left;">{{title}}</h1>
   `,
-  styleUrl: '../../styles.css'
 })
 export class HeaderComponent {
   title:string = 'My Notes';

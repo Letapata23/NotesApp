@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>NotesApp</title>
-  </head>
-  <body>
-    <app-header/>
-    <router-outlet/>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NotesApp</title>
+  <style>
+    /* Root/global styles */
+
+    /* Reset and base */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  min-height: 100vh;
+  /* Remove flex to avoid layout stretching */
+}
+
+body {
+  display: block; /* remove flex layout */
+}
+
+app-header {
+  display: block;
+  padding: 20px 0;
+  background-color: #007acc;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+router-outlet {
+  display: block;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+  </style>
+</head>
+<body>
+  <app-header></app-header>
+  <router-outlet></router-outlet>
+</body>
 </html>

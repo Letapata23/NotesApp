@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { Note } from '../notes';
+import { NoteDTO } from '../DTO/note-dto';
 import { NotesService } from '../notes.service';
 import { RouterLink } from '@angular/router';
 import { NoteIdService } from '../note-id.service';
@@ -17,21 +17,21 @@ import { NoteIdService } from '../note-id.service';
     <button class="button" (click) = "deleteNote()">Delete</button>
     <button class="button" routerLink="/note-update">Update</button>
   `,
-  styleUrl: '../../styles.css'
+  styleUrl: './show-note.component.css'
 })
 
 export class ShowNoteComponent implements OnInit{
   activeRoute:ActivatedRoute 
-  notes:Note[] 
+  notes:NoteDTO[] 
   id:number 
-  note:Note 
+  note:NoteDTO 
   router:Router
 
   constructor(private notesService:NotesService,private noteIdService:NoteIdService){
     this.activeRoute = inject(ActivatedRoute)
-    this.note={id:undefined,title:"",text:""}
-    this.notes = []
     this.id = Number(this.activeRoute.snapshot.paramMap.get('id'))
+    this.note={id:this.id,title:"",text:""}
+    this.notes = []
     this.router = inject(Router)
   }
 
@@ -39,7 +39,7 @@ export class ShowNoteComponent implements OnInit{
     this.noteIdService.setIdSubject(this.id)
     this.notesService.getNotes().subscribe(notes => {
       this.notes = notes
-      this.note = <Note>notes.find((note) => note.id === this.id)
+      this.note = <NoteDTO>notes.find((note) => note.id === this.id)
     })
   }
 

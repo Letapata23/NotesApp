@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Note } from '../notes';
+import { NoteDTO } from '../DTO/note-dto';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
@@ -12,11 +12,11 @@ import { NotesService } from '../notes.service';
   standalone:true,
   imports: [NgFor,RouterLink,RouterModule],
   templateUrl: './notes-list.component.html',
-  styleUrl: '../../styles.css'
+  styleUrl: './notes-list.component.css'
 })
 
 export class NotesListComponent implements OnInit{
-  notesList:Note[] = [];
+  notesList:NoteDTO[] = [];
   router:Router = inject(Router)
 
   constructor(private notesService:NotesService){
