@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.letapata.notes_management_system.dto.NoteCreationDTO;
 import com.letapata.notes_management_system.dto.NoteDTO;
 import com.letapata.notes_management_system.dto.NoteUpdateDTO;
-import com.letapata.notes_management_system.model.Note;
+import com.letapata.notes_management_system.entities.Note;
+import com.letapata.notes_management_system.entities.UserAccount;
+import com.letapata.notes_management_system.repository.AccountRepository;
 import com.letapata.notes_management_system.repository.NotesRepository;
 
 @Service
@@ -18,14 +20,22 @@ public class NotesService {
 
     @Autowired // Automatically inject the NotesRepository
     NotesRepository notesRepo;
+
+    @Autowired
+    AccountRepository accountRepo;
     
-    public NoteDTO createNote(NoteCreationDTO note){
+    public NoteDTO createNote(NoteCreationDTO note,Long userId){
         // Create Note object
         Note createdNote = new Note();
+
+        UserAccount userAccount = accountRepo.findById(userId).get();
 
         // Transfer data from DTO to Note Entity
         createdNote.setTitle(note.getTitle());
         createdNote.setText(note.getText());
+
+        // Set the note's user account
+        createdNote.setUser(userAccount);
 
         // Create NoteCreationDTO to be returned
         NoteDTO createdNoteDTO = new NoteDTO();
@@ -108,6 +118,13 @@ public class NotesService {
             // Throw an exception
             throw new IllegalArgumentException("The note with id " + id + "does not exist");
         }
+    }
+
+    public List<NoteDTO> findNotesByUserId(Long userId){
+        List<NoteDTO> notes = notesRepo.findByUserId(userId).stream().
+                                            map(note -> new NoteDTO(note.getId(),note.getTitle(),note.getText())).
+                                            collect(Collectors.toList());
+        return notes;
     }
 
 }

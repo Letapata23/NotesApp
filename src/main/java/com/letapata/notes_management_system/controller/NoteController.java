@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,42 +20,54 @@ import org.springframework.web.bind.annotation.RestController;
 import com.letapata.notes_management_system.dto.NoteCreationDTO;
 import com.letapata.notes_management_system.dto.NoteDTO;
 import com.letapata.notes_management_system.dto.NoteUpdateDTO;
-import com.letapata.notes_management_system.model.Note;
+import com.letapata.notes_management_system.entities.Note;
+import com.letapata.notes_management_system.entities.UserAccount;
+import com.letapata.notes_management_system.repository.AccountRepository;
 import com.letapata.notes_management_system.service.NotesService;
 
-@CrossOrigin(origins="http://localhost:4200/")
+import jakarta.servlet.http.HttpSession;
+
+@CrossOrigin(origins="http://localhost:4200/",
+             allowCredentials = "true")
 @RestController
 @RequestMapping("/notes")
 public class NoteController {
+
     @Autowired
-    NotesService notesService;
+    private NotesService notesService;
     
     @GetMapping("")
-    public ResponseEntity<List<NoteDTO>> getNote(){
-        List<NoteDTO> notes = notesService.findAllNotes();
-
-        if(notes != null){
-            return ResponseEntity.ok(notes);
-        }else{
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getNotes(HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not Logged in");
         }
+        return ResponseEntity.ok(notesService.findNotesByUserId(userId));
+
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<NoteDTO> getNoteById(@PathVariable Long id){
-        NoteDTO note = notesService.findNote(id);
-
-        if(note != null){
-            return ResponseEntity.ok(note);
-        }else{
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getNoteById(@PathVariable Long id, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not Logged In");
         }
+        
+        return ResponseEntity.ok(notesService.findNote(id));
     }
     
     @PostMapping("")
-    public ResponseEntity<NoteDTO> createNote(@RequestBody NoteCreationDTO note){
+    public ResponseEntity<?> createNote(@RequestBody NoteCreationDTO note, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        
+        if(userId == null){
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not Logged In");
+        }
+        
         // Save the newly created note
-        NoteDTO createdNote = notesService.createNote(note);
+        NoteDTO createdNote = notesService.createNote(note,userId);
 
         // Build a URI for the created resource
         URI location = URI.create("/notes/" + createdNote.getId());
@@ -63,7 +77,13 @@ public class NoteController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<NoteUpdateDTO> updateNote(@RequestBody NoteUpdateDTO note, @PathVariable Long id){
+    public ResponseEntity<?> updateNote(@RequestBody NoteUpdateDTO note, @PathVariable Long id, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
+        }
+
         NoteUpdateDTO updatedNote = notesService.updateNote(note, id);
 
         if(updatedNote != null){
@@ -74,7 +94,13 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNote(@PathVariable Long id){
+    public ResponseEntity<?> deleteNote(@PathVariable Long id,HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        
+        if(userId == null){
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
+        }
+
         NoteDTO note = notesService.deleteNote(id);
 
         if(note != null){
