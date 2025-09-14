@@ -11,11 +11,11 @@ import { NoteIdService } from '../note-id.service';
   imports: [RouterModule,RouterLink],
   template: `
         <div id="note-detail-section">
-            <h1 id="note-title">{{note.title}}</h1>
-            <p id="note-text">{{note.text}}</p>
+            <h1 id="note-title">{{note?.title}}</h1>
+            <p id="note-text">{{note?.text}}</p>
         </div>
     <button class="button" (click) = "deleteNote()">Delete</button>
-    <button class="button" routerLink="/note-update">Update</button>
+    <button class="button" routerLink="/main/note-update">Update</button>
   `,
   styleUrl: './show-note.component.css'
 })
@@ -24,7 +24,7 @@ export class ShowNoteComponent implements OnInit{
   activeRoute:ActivatedRoute 
   notes:NoteDTO[] 
   id:number 
-  note:NoteDTO 
+  note:NoteDTO | undefined 
   router:Router
 
   constructor(private notesService:NotesService,private noteIdService:NoteIdService){
@@ -46,8 +46,9 @@ export class ShowNoteComponent implements OnInit{
   deleteNote(){
     this.notesService.deleteNote(this.id).subscribe(note => {
       console.log("Deleted note:" + note)
+      this.router.navigateByUrl('/main/notes-list')
     })
-    this.router.navigateByUrl('')
+    
   }
   
 }

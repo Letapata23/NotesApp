@@ -4,12 +4,16 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": ["node"] // Add node types
   },
   "files": [
     "src/main.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.ts"
+  ],
+  "exclude": [
+  "src/**/*.spec.ts",  // Exclude all test files from the main build
+  "src/test.ts"
   ]
 }

@@ -15,22 +15,22 @@ export class NotesService {
   constructor(private httpClient:HttpClient) { }
 
   getNotes():Observable<NoteDTO[]>{
-    return this.httpClient.get<NoteDTO[]>(this.url)
+    return this.httpClient.get<NoteDTO[]>(this.url,{withCredentials:true})
   }
 
   getNote(id:number):Observable<NoteDTO>{
-    return this.httpClient.get<NoteDTO>(`${this.url}/${id}`)
+    return this.httpClient.get<NoteDTO>(`${this.url}/${id}`,{withCredentials:true})
   }
 
   createNote(note:NoteCreationDTO):Observable<NoteCreationDTO>{
-    return this.httpClient.post<NoteCreationDTO>(this.url,note)
+    return this.httpClient.post<NoteCreationDTO>(this.url,note,{withCredentials:true})
   }
 
   updateNote(note:NoteUpdateDTO,id:number):Observable<NoteUpdateDTO>{
-    return this.httpClient.put<NoteUpdateDTO>(`${this.url}/${id}`, note)
+    return this.httpClient.put<NoteUpdateDTO>(`${this.url}/${id}`, note,{withCredentials:true})
   }
 
   deleteNote(id:number):Observable<NoteDTO>{
-    return this.httpClient.delete<NoteDTO>(`${this.url}/${id}`)
+    return this.httpClient.delete<NoteDTO>(`${this.url}/${id}`,{withCredentials:true})
   }
 }

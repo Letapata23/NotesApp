@@ -43,9 +43,10 @@ export class NoteUpdateComponent implements OnInit{
 
     this.notesService.updateNote(note,this.id).subscribe(note => {
       console.log("The updated note is:" + note)
+       this.router.navigateByUrl("/main/notes-list")
     })
 
-    this.router.navigateByUrl("")
+   
   }
 
 }

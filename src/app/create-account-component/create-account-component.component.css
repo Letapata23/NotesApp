@@ -1,0 +1,58 @@
+/* Form container */
+.create-account-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px 25px;
+  background-color: #f5faff;
+  border: 2px solid #007acc;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+/* NEW: Section for grouped inputs */
+.create-account-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* space between label+input pairs */
+}
+
+/* Input fields inside the div */
+.create-account-form label {
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+.create-account-form input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.2s border-color ease;
+}
+
+.create-account-form input:focus {
+  border-color: #007acc;
+  outline: none;
+}
+
+/* Button styling */
+#create-account-button {
+  background-color: #007acc;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#create-account-button:hover {
+  background-color: #005fa3;
+}
+

@@ -1,9 +1,9 @@
 
-<button class="button" routerLink="add-notes-component">Add Note</button>
+<button class="button" routerLink="/main/add-notes-component">Add Note</button>
 
 <ul id="notes-list">
   <li id="list-item" *ngFor="let note of notesList; trackBy: trackByNoteId">
-    <button [routerLink]="['/note', note.id]" id="note-button">
+    <button [routerLink]="['/main/note', note.id]" id="note-button">
       <span id="title">{{ note.title }}</span>
       <hr />
       <span>{{ note.text }}</span>

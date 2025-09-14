@@ -40,10 +40,10 @@ export class AddNoteComponent{
         // Add the note to th/e list of notes
         this.noteService.createNote(note).subscribe(note => {
           console.log("The note is: " + "" + note.text + " " + note.title)
-      }) 
-      // Adds the note at the beginning of the notes list
-        this.formGroup.reset()
-        this.router.navigateByUrl("")
+          this.formGroup.reset()
+          this.router.navigateByUrl("/main/notes-list")
+        }) 
+        
     }
   }
 
