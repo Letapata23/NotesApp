@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.letapata.notes_management_system.dto.NoteCreationDTO;
@@ -19,11 +20,19 @@ import com.letapata.notes_management_system.repository.NotesRepository;
 public class NotesService {
 
     @Autowired // Automatically inject the NotesRepository
-    NotesRepository notesRepo;
+    private NotesRepository notesRepo;
 
     @Autowired
-    AccountRepository accountRepo;
+    private AccountRepository accountRepo;
+
+    private final SimpMessagingTemplate messagingTemplate;
     
+    
+    @Autowired
+    public NotesService(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
+
     public NoteDTO createNote(NoteCreationDTO note,Long userId){
         // Create Note object
         Note createdNote = new Note();
@@ -45,6 +54,9 @@ public class NotesService {
         
         // Save the Note Entity
         notesRepo.save(createdNote);
+
+        System.out.println("Sending WebSocket message for ADD");
+        messagingTemplate.convertAndSend("/topic/notes", "ADD");
         
         // Return the NoteCreationDTO
         return createdNoteDTO;
@@ -57,6 +69,7 @@ public class NotesService {
         List<NoteDTO> noteDtoList = notes.stream().
                                             map(note -> new NoteDTO(note.getId(),note.getTitle(),note.getText())).
                                             collect(Collectors.toList());
+        //messagingTemplate.convertAndSend("/topic/notes", "REFRESH");
         return noteDtoList;
     }
     
@@ -72,7 +85,7 @@ public class NotesService {
             noteDto.setId(retrievedNote.getId());
             noteDto.setText(retrievedNote.getText());
             noteDto.setTitle(retrievedNote.getTitle());
-
+        
             return noteDto;
         }else{
             // Throw an exception
@@ -87,12 +100,25 @@ public class NotesService {
         if(theNote.isPresent()){
             // Create the updated entity
             Note updatedNote = theNote.get();
-            updatedNote.setTitle(note.getTitle());
-            updatedNote.setText(note.getText());
+
+            if(!note.getTitle().equals("")){
+                updatedNote.setTitle(note.getTitle());
+            }
+
+            if(!note.getText().equals("")){
+                updatedNote.setText(note.getText());}
+            
             notesRepo.save(updatedNote);
 
             // Prepare the NoteUpdateDTO
-            NoteUpdateDTO updatedNoteDto = note;
+            NoteUpdateDTO updatedNoteDto = new NoteUpdateDTO();
+            updatedNoteDto.setText(updatedNote.getText());
+            updatedNoteDto.setText(updatedNote.getTitle());
+            
+            System.out.print("Sending WebSocket message for Update");
+            messagingTemplate.convertAndSend("/topic/notes", "UPDATE");
+                
+                
             return updatedNoteDto;
         }else {
             // Throw an exception
@@ -112,6 +138,7 @@ public class NotesService {
             deletedNoteDto.setText(note.get().getText());
             deletedNoteDto.setTitle(note.get().getTitle());
 
+            messagingTemplate.convertAndSend("/topic/notes", "REFRESH");
             return deletedNoteDto;
         }
         else{
@@ -124,6 +151,7 @@ public class NotesService {
         List<NoteDTO> notes = notesRepo.findByUserId(userId).stream().
                                             map(note -> new NoteDTO(note.getId(),note.getTitle(),note.getText())).
                                             collect(Collectors.toList());
+        
         return notes;
     }
 

@@ -1827,3 +1827,27 @@ Caused by: java.lang.AssertionError
 	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
 	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
 	... 19 more
+2025-09-13 06:48:54.453606+02:00 jdbc[31]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'nnnnnnnnnnnnnnnnnnnnnnnnnmml' (28)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 06:48:56.767432+02:00 jdbc[31]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'nnnnnnnnnnnnnnnnnnnnnnnnnmml' (28)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 06:48:57.743955+02:00 jdbc[31]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'nnnnnnnnnnnnnnnnnnnnnnnnnmml' (28)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 06:49:49.228765+02:00 jdbc[31]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'nnnnnnnnnnnnnnnnnnnnnnnnnmml' (28)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 07:37:27.069165+02:00 jdbc[47]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'ddddddddddddddddddddddddddddd' (29)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 07:37:28.675271+02:00 jdbc[45]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'ddddddddddddddddddddddddddddd' (29)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 07:37:29.709854+02:00 jdbc[45]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'ddddddddddddddddddddddddddddd' (29)"; SQL statement:
+update note set text=?,title=?,account_id=? where id=? [22001-232]
+2025-09-13 08:53:47.692342+02:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "TITLE CHARACTER VARYING(25)": "'lllllllllllllllllllllllllllll' (29)"; SQL statement:
+insert into note (text,title,account_id,id) values (?,?,?,?) [22001-232]

@@ -27,7 +27,7 @@ public class AccountController {
         if(creationResult.isPresent()){
             return ResponseEntity.ok(creationResult.get());
         }else{
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Account already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
     }
 

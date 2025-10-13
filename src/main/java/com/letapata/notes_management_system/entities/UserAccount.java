@@ -22,6 +22,8 @@ public class UserAccount {
     private String username;
     @Column(nullable=false)
     private String password;
+    @Column(nullable=false)
+    private String email;
     @OneToMany(mappedBy="user",cascade=CascadeType.ALL)
     private List<Note> notes = new ArrayList<>();
 
@@ -48,6 +50,16 @@ public class UserAccount {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    
 
     
 }

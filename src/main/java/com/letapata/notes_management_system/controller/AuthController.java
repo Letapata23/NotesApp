@@ -45,8 +45,10 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session){
+    public ResponseEntity<?> logout(HttpSession session){
         session.invalidate(); // destroy session
-        return ResponseEntity.ok("Logged out");
+        Map<String,String> response = new HashMap<>();
+        response.put("message","Logged out");
+        return ResponseEntity.ok(response);
     }
 }

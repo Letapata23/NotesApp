@@ -3,6 +3,7 @@ package com.letapata.notes_management_system.dto;
 public class AccountDto {
     private String username;
     private String password;
+    private String email;
     
     public AccountDto() {
     }
@@ -22,5 +23,15 @@ public class AccountDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    
 
 }

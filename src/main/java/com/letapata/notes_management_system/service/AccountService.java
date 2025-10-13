@@ -33,6 +33,7 @@ public class AccountService {
         if(usernameFound != true){
             newAccount.setUsername(accountDto.getUsername());
             newAccount.setPassword(accountDto.getPassword());
+            newAccount.setEmail(accountDto.getEmail());
             accountRepo.save(newAccount);
             creationResult = Optional.of(accountDto);
         }
